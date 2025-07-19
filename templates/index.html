@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YOLO детектор</title>
+</head>
+<body>
+  <h1>Загрузите изображение</h1>
+  <input type="file" id="imageInput">
+  <button onclick="processImage()">Запустить</button>
+  <div id="stats"></div>
+  <img id="resultImage" src="" width="600">
+  
+  <script>
+    async function processImage() {
+        const file = document.getElementById('imageInput').files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await fetch('/process', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        document.getElementById('resultImage').src = '/static/result.jpg?' + Date.now();
+        document.getElementById('stats').innerText = `Обнаружено объектов: ${data.count}`;
+    }
+  </script>
+</body>
+</html>
